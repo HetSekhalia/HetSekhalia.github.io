@@ -1,12 +1,54 @@
-/ (root)
-  index.html          # Home + About
-  projects/
-    index.html        # Projects hub listing all 6+
-    proj-1.html
-    proj-2.html
-    ...               # up to proj-6.html (or more)
-  assets/
-    img/              # screenshots, thumbnails
-    css/styles.css    # optional custom styles
-  resume.pdf          # 1-page resume
-  memo.pdf            # 1-page justification memo to Prof Wolfe
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Your Name – Engineering Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body{max-width:880px;margin:2rem auto;font:16px/1.6 system-ui,Arial;padding:0 1rem}
+    header nav a{margin-right:1rem}
+    .grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+    .card{border:1px solid #ddd;border-radius:12px;padding:1rem}
+    img{max-width:100%;height:auto;border-radius:8px}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Your Name</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/projects/">Projects</a>
+      <a href="/resume.pdf">Resume (PDF)</a>
+      <a href="/memo.pdf">Justification Memo</a>
+    </nav>
+  </header>
+
+  <section>
+    <h2>About Me</h2>
+    <p>1–2 short paragraphs: who you are, what you build, what you want next.</p>
+    <ul>
+      <li>Make skills easy for employers to find.</li>
+      <li>Tie your work to social/real-world value.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Featured Projects</h2>
+    <div class="grid">
+      <a class="card" href="/projects/proj-1.html">
+        <img src="/assets/img/proj1-thumb.jpg" alt="Project 1 thumbnail">
+        <h3>Project 1 Title</h3>
+        <p>1–2 line teaser of problem + impact.</p>
+      </a>
+      <a class="card" href="/projects/proj-2.html">
+        <img src="/assets/img/proj2-thumb.jpg" alt="Project 2 thumbnail">
+        <h3>Project 2 Title</h3>
+        <p>1–2 line teaser of problem + impact.</p>
+      </a>
+      <!-- Add more cards -->
+    </div>
+  </section>
+
+  <footer><small>© Your Name</small></footer>
+</body>
+</html>
