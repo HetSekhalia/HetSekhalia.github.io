@@ -8,13 +8,33 @@
     body{max-width:880px;margin:2rem auto;font:16px/1.6 system-ui,Arial;padding:0 1rem}
     header nav a{margin-right:1rem}
     .grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-    .card{border:1px solid #ddd;border-radius:12px;padding:1rem}
+    .card{border:1px solid #ddd;border-radius:12px;padding:1rem;text-decoration:none;color:inherit;display:block;transition:box-shadow 0.3s}
+    .card:hover{box-shadow:0 4px 8px rgba(0,0,0,0.1)}
+    .card p{color:#000;margin:0.5rem 0 0 0}
+    .card h3{color:inherit;text-decoration:none;margin:0.5rem 0}
+    .card img{cursor:pointer;transition:opacity 0.3s}
+    .card:hover img{opacity:0.8}
     img{max-width:100%;height:auto;border-radius:8px}
+    .hero{display:flex;gap:2rem;align-items:flex-start;margin:2rem 0}
+    .hero-content{flex:1}
+    .hero h1{margin-top:0;margin-bottom:1rem;font-size:2.5rem}
+    .hero-photo{flex-shrink:0;width:250px;height:300px;overflow:hidden;border-radius:12px}
+    .hero-photo img{width:100%;height:100%;border-radius:12px;object-fit:cover;object-position:center;cursor:pointer;transition:opacity 0.3s}
+    .hero-photo img:hover{opacity:0.9}
+    @media (max-width: 768px){.hero{flex-direction:column}.hero-photo{width:100%;max-width:300px;height:360px;margin:0 auto}}
+    .modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.9);cursor:pointer;overflow-y:auto}
+    .modal.active{display:flex;align-items:center;justify-content:center;padding:2rem;box-sizing:border-box}
+    .modal-content{max-width:90%;max-height:90%;object-fit:contain;border-radius:8px}
+    .modal-close{position:fixed;top:20px;right:35px;color:#f1f1f1;font-size:40px;font-weight:bold;cursor:pointer;z-index:1001}
+    .modal-close:hover{color:#bbb}
+    .project-modal-content{background-color:#fff;border-radius:12px;padding:2rem;max-width:calc(100% - 4rem);width:calc(100% - 4rem);max-height:calc(100vh - 4rem);overflow-y:auto;cursor:default;position:relative;margin:auto;box-sizing:border-box}
+    .project-modal-content h2{margin-top:0}
+    .project-modal-content img{max-width:100%;margin:1rem 0}
+    .card{cursor:pointer}
   </style>
 </head>
 <body>
   <header>
-    <h1>Het Sekhalia</h1>
     <nav>
       <a href="index.html">Home</a>
       <a href="projects/index.html">Projects</a>
@@ -23,12 +43,17 @@
     </nav>
   </header>
 
-  <section>
-    <h2>About Me</h2>
-    <p>I’m a Mechanical Engineering master’s student at Carnegie Mellon University specializing in control systems, autonomous robotics, and deep reinforcement learning. My work focuses on building reliable, real-time autonomy stacks for complex robotic systems—ranging from heavy construction equipment to simulated autonomous vehicles—using motion planning, feedback control, and machine learning.
+  <div class="hero">
+    <div class="hero-content">
+      <h1>Het Sekhalia</h1>
+      <p>I'm a Mechanical Engineering master's student at Carnegie Mellon University specializing in control systems, autonomous robotics, and deep reinforcement learning. My work focuses on building reliable, real-time autonomy stacks for complex robotic systems—ranging from heavy construction equipment to simulated autonomous vehicles—using motion planning, feedback control, and machine learning.
 
 Across both research and project work, I aim to design systems that are safe, efficient, and deployable in real-world conditions. I am particularly interested in advancing intelligent robotics that improve productivity and safety in industrial environments.</p>
-  </section>
+    </div>
+    <div class="hero-photo">
+      <img src="assets/img/my.jpeg" alt="Het Sekhalia" id="profile-img">
+    </div>
+  </div>
     <section>
   <h2>Skills</h2>
 
@@ -66,30 +91,135 @@ Across both research and project work, I aim to design systems that are safe, ef
   <section>
     <h2>Featured Projects</h2>
     <div class="grid">
-      <a class="card" href="projects/proj-1.html">
-        <img src="assets/img/proj1-thumb.jpg" alt="Project 1 thumbnail">
+      <div class="card" data-project="1">
+        <img src="assets/img/wheel_loader.png" alt="Project 1 thumbnail">
         <h3>Autonomous wheel loader control</h3>
         <p>Developing a full autonomy stack for a wheel loader, combining RRT-based planning, B-spline smoothing, and real-time NMPC within a ROS2 + Isaac Sim environment.</p>
-      </a>
-      <a class="card" href="projects/proj-2.html">
-        <img src="assets/img/proj2-thumb.jpg" alt="Project 2 thumbnail">
-        <h3>Autonomous Vehicle Control </h3>
+      </div>
+      <div class="card" data-project="2">
+        <img src="assets/img/MCT.jpeg" alt="Project 2 thumbnail">
+        <h3>Autonomous Vehicle Control</h3>
         <p>Designed full-stack planning and control for a simulated Tesla Model 3, integrating A*, PID/LQR control, and EKF-SLAM for robust autonomous navigation.</p>
-      </a>
-      <a class="card" href="projects/proj-3.html">
-        <img src="assets/img/proj3-thumb.jpg" alt="Project 3 thumbnail">
-        <h3>Continuous Variable Transmission Bicycle </h3>
+      </div>
+      <div class="card" data-project="3">
+        <img src="assets/img/CVT.png" alt="Project 3 thumbnail">
+        <h3>Continuous Variable Transmission Bicycle</h3>
         <p>Built the control system for a CVT bicycle using encoder-driven PID control and IMU sensing, enabling smooth real-time gear ratio adjustment and a functional prototype.</p>
-      </a>
-      <a class="card" href="projects/proj-4.html">
-        <img src="assets/img/proj4-thumb.jpg" alt="Project 4 thumbnail">
-        <h3>Policy Gradient RL for Control </h3>
+      </div>
+      <div class="card" data-project="4">
+        <img src="assets/img/cart_pole.gif" alt="Project 4 thumbnail">
+        <h3>Policy Gradient RL for Control</h3>
         <p>Developed and evaluated a suite of deep reinforcement learning agents to solve CartPole-v1, applying policy-gradient methods.</p>
-      </a>
+      </div>
       <!-- Add more cards -->
     </div>
   </section>
 
   <footer><small>© Het Sekhalia</small></footer>
+
+  <!-- Modal for enlarged image -->
+  <div id="imageModal" class="modal">
+    <span class="modal-close image-modal-close">&times;</span>
+    <img class="modal-content" id="modalImage" src="assets/img/me_full.jpeg" alt="Het Sekhalia">
+  </div>
+
+  <!-- Project Modals - Content loaded from individual project HTML files -->
+  <div id="projectModal1" class="modal project-modal">
+    <span class="modal-close project-modal-close">&times;</span>
+    <div class="project-modal-content" onclick="event.stopPropagation()">
+      <!-- Content will be loaded from projects/proj-1.html -->
+    </div>
+  </div>
+
+  <div id="projectModal2" class="modal project-modal">
+    <span class="modal-close project-modal-close">&times;</span>
+    <div class="project-modal-content" onclick="event.stopPropagation()">
+      <!-- Content will be loaded from projects/proj-2.html -->
+    </div>
+  </div>
+
+  <div id="projectModal3" class="modal project-modal">
+    <span class="modal-close project-modal-close">&times;</span>
+    <div class="project-modal-content" onclick="event.stopPropagation()">
+      <!-- Content will be loaded from projects/proj-3.html -->
+    </div>
+  </div>
+
+  <div id="projectModal4" class="modal project-modal">
+    <span class="modal-close project-modal-close">&times;</span>
+    <div class="project-modal-content" onclick="event.stopPropagation()">
+      <!-- Content will be loaded from projects/proj-4.html -->
+    </div>
+  </div>
+
+  <script src="js/load-project-content.js"></script>
+  <script>
+    // Profile image modal
+    const profileImg = document.getElementById('profile-img');
+    const imageModal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+    const imageCloseBtn = document.querySelector('.image-modal-close');
+
+    profileImg.addEventListener('click', function() {
+      imageModal.classList.add('active');
+      modalImg.src = 'assets/img/me_full.jpeg';
+    });
+
+    imageCloseBtn.addEventListener('click', function() {
+      imageModal.classList.remove('active');
+    });
+
+    imageModal.addEventListener('click', function(e) {
+      if (e.target === imageModal) {
+        imageModal.classList.remove('active');
+      }
+    });
+
+    // Project modals
+    const projectCards = document.querySelectorAll('.card[data-project]');
+    const projectModals = document.querySelectorAll('.project-modal');
+    const projectCloseBtns = document.querySelectorAll('.project-modal-close');
+
+    projectCards.forEach(card => {
+      card.addEventListener('click', function() {
+        const projectNum = parseInt(this.getAttribute('data-project'));
+        openProjectModal(projectNum, '');
+      });
+    });
+
+    projectCloseBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const modal = this.closest('.project-modal');
+        if (modal) {
+          modal.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      });
+    });
+
+    projectModals.forEach(modal => {
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+          modal.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      });
+    });
+
+    // Close modals with Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        if (imageModal.classList.contains('active')) {
+          imageModal.classList.remove('active');
+        }
+        projectModals.forEach(modal => {
+          if (modal.classList.contains('active')) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>
