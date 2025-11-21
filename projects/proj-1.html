@@ -2,38 +2,97 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Project 1 – Your Name</title>
+  <title>Autonomous Wheel-Loader Control Stack – Het Sekhalia</title>
+  <style>
+    .intro-container {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+      margin: 1rem 0;
+    }
+    .intro-text {
+      flex: 1;
+    }
+    .intro-image {
+      flex-shrink: 0;
+      width: 300px;
+    }
+    .intro-image img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    @media (max-width: 768px) {
+      .intro-container {
+        flex-direction: column;
+      }
+      .intro-image {
+        width: 100%;
+        max-width: 400px;
+      }
+    }
+  </style>
 </head>
 <body>
   <nav>
     <a href="/">Home</a> | <a href="/projects/">All Projects</a>
   </nav>
 
-  <h1>Project 1 Title</h1>
+  <h1>Autonomous Wheel-Loader Control Stack</h1>
+  <h2>Komatsu x CERLAB</h2>
+  
+  <p><strong>CERLAB, Carnegie Mellon University | Prof. Kenji Shimada</strong></p>
 
-  <!-- IMRD/IDEC structure -->
-  <h2>Introduction</h2>
-  <p>What problem were you trying to solve? Why does it matter? What is the social or engineering value?</p>
+  <div class="intro-container" style="display: flex; gap: 2rem; align-items: flex-start; margin: 1rem 0;">
+    <div class="intro-text" style="flex: 1;">
+      <h2>Introduction</h2>
+      <p>Efficient and safe operation of heavy construction machinery is a growing challenge in modern worksites. Autonomous wheel loaders can reduce operator fatigue, prevent accidents, and improve productivity in hazardous environments such as mining, quarrying, and large-scale construction. This project focuses on building a modular autonomy stack for Komatsu wheel loader that can perform loading and dumping tasks safely and reliably in simulation. The objective is to design, simulate, and control full-cycle autonomous behavior using advanced motion-planning and nonlinear control techniques.</p>
+    </div>
+    <div class="intro-image" style="flex-shrink: 0; width: 300px;">
+      <img src="/assets/img/wheel_loader.png" alt="Wheel loader project" style="width: 100%; height: auto; border-radius: 12px;">
+    </div>
+  </div>
 
-  <h2>Method</h2>
-  <p>How did you approach the problem? What tools, technologies, or methods did you use?</p>
-
-  <h2>Results</h2>
-  <p>What did you build? Show screenshots, diagrams, or short descriptions of outcomes.</p>
-
-  <h2>Discussion</h2>
-  <p>What worked well? What challenges did you face? What did you learn from this project?</p>
-
-  <!-- Specific contributions -->
-  <h2>My Contributions</h2>
+  <h2>Methodology</h2>
+  
+  <p>The autonomy stack was developed inside a ROS2 + Isaac Sim ecosystem with a modular architecture supporting perception, planning, and control. My work centered on the trajectory-planning and control subsystems:</p>
+  
+  <div style="display: flex; gap: 2rem; align-items: flex-start; margin: 1rem 0;">
+    <div style="flex-shrink: 0; width: 300px;">
+      <img src="/assets/img/RRT_wheel.png" alt="RRT path planning" style="width: 100%; height: auto; border-radius: 8px;">
+    </div>
+    <div style="flex: 1;">
+      <h4>Trajectory Planning:</h4>
+      <ul>
+        <li>Designed kinematically feasible trajectories for the articulated wheel loader using RRT, RRT*, and Hybrid A* algorithms.</li>
+        <li>Integrated vehicle-specific constraints such as articulation steering limits, minimum turning radius, and loader geometry.</li>
+        <li>Applied B-spline smoothing and velocity profiling to convert raw graph-search paths into dynamically feasible motion references.</li>
+      </ul>
+    </div>
+  </div>
+  
+  <div style="display: flex; gap: 2rem; align-items: flex-start; margin: 1rem 0;">
+    <div style="flex: 1;">
+      <h4>Closed-Loop Control:</h4>
+      <ul>
+        <li>Implemented a nonlinear model predictive controller (NMPC) using the ACADO toolkit to track smoothed trajectories with real-time feedback.</li>
+        <li>Tuned system-level constraints (actuator limits, steering rate, velocity bounds) for stable control under varying task conditions.</li>
+      </ul>
+    </div>
+    <div style="flex-shrink: 0; width: 400px;">
+      <img src="/assets/img/ACADOS.png" alt="ACADO toolkit" style="width: 100%; height: auto; border-radius: 8px;">
+    </div>
+  </div>
+  
+  <h4>Simulation Infrastructure:</h4>
   <ul>
-    <li>Explain clearly what YOU did vs. what the team did.</li>
-    <li>Use action verbs: designed, implemented, tested, deployed, etc.</li>
+    <li>Deployed the NMPC controller inside ROS2 and connected it to Isaac Sim using a dual-Docker architecture, enabling real-time closed-loop simulation.</li>
   </ul>
 
-  <!-- Optional media -->
-  <h2>Media</h2>
-  <img src="/assets/img/proj1-hero.jpg" alt="Screenshot of Project 1" style="max-width:400px;">
-  <p><a href="https://github.com/yourusername/project1">Source Code</a></p>
+  <h2>Implementation</h2>
+  <p>All modules were integrated as separate ROS2 nodes for clarity, testing, and reproducibility. The planner, smoother, and NMPC controller were benchmarked across multiple loading-cycle scenarios, including bucket approach, scooping, reversing, and material dumping.</p>
+
+  <h2>Results</h2>
+  <p>The integrated pipeline successfully generated collision-free, kinematically feasible trajectories and executed them stably inside Isaac Sim. The NMPC consistently maintained low cross-track error and smooth articulation angle transitions. The modular design now supports further expansions such as perception integration and reinforcement-learning-based policy layers.</p>
 </body>
 </html>

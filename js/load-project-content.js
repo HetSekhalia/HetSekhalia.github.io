@@ -13,11 +13,11 @@ const contentCache = {};
 
 function loadProjectContent(projectId, imagePathPrefix = '') {
   return new Promise((resolve, reject) => {
-    // Check cache first
-    if (contentCache[projectId]) {
-      resolve(contentCache[projectId]);
-      return;
-    }
+    // Check cache first (commented out for development - uncomment to enable caching)
+    // if (contentCache[projectId]) {
+    //   resolve(contentCache[projectId]);
+    //   return;
+    // }
 
     const projectFile = projectFiles[projectId];
     if (!projectFile) {
@@ -40,10 +40,13 @@ function loadProjectContent(projectId, imagePathPrefix = '') {
       filePath = `projects/proj-${projectId}.html`;
     }
 
-    fetch(filePath)
+    // Append timestamp to bypass browser cache during development
+    const cacheBustedPath = `${filePath}?v=${Date.now()}`;
+
+    fetch(cacheBustedPath)
       .then(response => {
         if (!response.ok) {
-          throw new Error(`Failed to load ${filePath} (Status: ${response.status})`);
+          throw new Error(`Failed to load ${cacheBustedPath} (Status: ${response.status})`);
         }
         return response.text();
       })
@@ -57,10 +60,7 @@ function loadProjectContent(projectId, imagePathPrefix = '') {
         const nav = body.querySelector('nav');
         if (nav) nav.remove();
         
-        // Get the title (h1)
-        const title = body.querySelector('h1')?.textContent || `Project ${projectId}`;
-        
-        // Get all content after nav
+        // Get all content after nav (keep h1 in content, it's the title)
         const content = Array.from(body.children).map(el => {
           // Clone the element
           const clone = el.cloneNode(true);
@@ -94,7 +94,7 @@ function loadProjectContent(projectId, imagePathPrefix = '') {
           return clone.outerHTML;
         }).join('');
         
-        const result = { title, content };
+        const result = { content };
         contentCache[projectId] = result;
         resolve(result);
       })
@@ -127,9 +127,9 @@ function openProjectModal(projectId, imagePathPrefix = '') {
 
   // Load content
   loadProjectContent(projectId, imagePathPrefix)
-    .then(({ title, content }) => {
-      // Update modal content
-      contentDiv.innerHTML = `<h2>${title}</h2>${content}`;
+    .then(({ content }) => {
+      // Update modal content (h1 title is already in the content)
+      contentDiv.innerHTML = content;
     })
     .catch(error => {
       contentDiv.innerHTML = `<p>Error loading project content: ${error.message}</p>`;

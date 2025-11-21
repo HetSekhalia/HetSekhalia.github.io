@@ -2,38 +2,103 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Project 2 – Your Name</title>
+  <title>Autonomous Vehicle Control System – Het Sekhalia</title>
+  <style>
+    .intro-container {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+      margin: 1rem 0;
+    }
+    .intro-text {
+      flex: 1;
+    }
+    .intro-image {
+      flex-shrink: 0;
+      width: 300px;
+    }
+    .intro-image img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    @media (max-width: 768px) {
+      .intro-container {
+        flex-direction: column;
+      }
+      .intro-image {
+        width: 100%;
+        max-width: 400px;
+      }
+    }
+  </style>
 </head>
 <body>
   <nav>
     <a href="/">Home</a> | <a href="/projects/">All Projects</a>
   </nav>
 
-  <h1>Project 2 Title</h1>
+  <h1>Autonomous Vehicle Control System</h1>
+  <h2>Tesla Model 3 Simulation</h2>
+  
 
-  <!-- IMRD/IDEC structure -->
-  <h2>Introduction</h2>
-  <p>What problem were you trying to solve? Why does it matter? What is the social or engineering value?</p>
+  <div class="intro-container" style="display: flex; gap: 2rem; align-items: flex-start; margin: 1rem 0;">
+    <div class="intro-text" style="flex: 1;">
+      <h2>Introduction</h2>
+      <p>Autonomous driving systems play a critical role in improving road safety, reducing traffic fatalities, and enabling efficient mobility in urban environments. This project focused on developing and evaluating a full-stack autonomous vehicle control pipeline for a Tesla Model 3 inside the Webots simulator. The objective was to design robust planning, control, and localization modules capable of handling real-time navigation tasks, even in GPS-denied environments and under noisy sensor conditions.</p>
+    </div>
+    <div class="intro-image" style="flex-shrink: 0; width: 300px;">
+      <img src="/assets/img/MCT.jpeg" alt="Tesla Model 3 simulation">
+    </div>
+  </div>
 
-  <h2>Method</h2>
-  <p>How did you approach the problem? What tools, technologies, or methods did you use?</p>
-
-  <h2>Results</h2>
-  <p>What did you build? Show screenshots, diagrams, or short descriptions of outcomes.</p>
-
-  <h2>Discussion</h2>
-  <p>What worked well? What challenges did you face? What did you learn from this project?</p>
-
-  <!-- Specific contributions -->
-  <h2>My Contributions</h2>
+  <h2>Methodology</h2>
+  
+  <p>The system was implemented as a modular stack consisting of vehicle modeling, trajectory tracking controllers, path planning, and localization:</p>
+  
+  <h4>Vehicle Dynamics Modeling</h4>
   <ul>
-    <li>Explain clearly what YOU did vs. what the team did.</li>
-    <li>Use action verbs: designed, implemented, tested, deployed, etc.</li>
+    <li>Constructed a linearized bicycle model of the Tesla Model 3 to capture essential kinematic behavior.</li>
+    <li>Tuned model parameters to match turning radius, wheelbase, and velocity ranges.</li>
+  </ul>
+  
+  <div style="display: flex; gap: 2rem; align-items: flex-start; margin: 1rem 0;">
+    <div style="flex: 1;">
+      <h4>Control System Design</h4>
+      <ul>
+        <li>Implemented PID controllers for lateral (steering) and longitudinal (speed) tracking, enabling real-time response to reference trajectories.</li>
+        <li>Designed state-space controllers using pole placement to improve stability during aggressive steering or curved-road scenarios.</li>
+        <li>Developed a discrete-time LQR controller for optimal lateral control, balancing steering smoothness, noise rejection, and safety constraints.</li>
+      </ul>
+    </div>
+    <div style="flex-shrink: 0; width: 400px;">
+      <img src="/assets/img/P3_LQR%20result.png" alt="LQR control results" style="width: 100%; height: auto; border-radius: 8px;">
+    </div>
+  </div>
+  
+  <div style="display: flex; gap: 2rem; align-items: flex-start; margin: 1rem 0;">
+    <div style="flex-shrink: 0; width: 300px;">
+      <img src="/assets/img/P3_A*%20planning.png" alt="A* path planning" style="width: 100%; height: auto; border-radius: 8px;">
+    </div>
+    <div style="flex: 1;">
+      <h4>Planning & Navigation</h4>
+      <ul>
+        <li>Programmed an A* planner to generate obstacle-aware, collision-free trajectories in dynamic environments.</li>
+        <li>Ensured safe navigation by incorporating road geometry, constraints, and obstacle boundaries.</li>
+      </ul>
+    </div>
+  </div>
+  
+  <h4>Localization & Estimation</h4>
+  <ul>
+    <li>Deployed EKF-SLAM to estimate vehicle position and heading when GPS is unreliable or unavailable.</li>
+    <li>Modeled sensor noise and incorporated range/bearing measurements to improve state estimation quality.</li>
   </ul>
 
-  <!-- Optional media -->
-  <h2>Media</h2>
-  <img src="/assets/img/proj2-hero.jpg" alt="Screenshot of Project 2" style="max-width:400px;">
-  <p><a href="https://github.com/yourusername/project1">Source Code</a></p>
+  <h2>Implementation</h2>
+  <p>Each subsystem—vehicle model, controllers, planner, and SLAM—was implemented as a standalone module inside Webots. Controllers operated at discrete time steps to maintain real-time behavior, and SLAM outputs were fed back into the control loop for accurate trajectory tracking.</p>
+
+  <h2>Results</h2>
+  <p>The integrated system achieved stable lane-keeping, smooth trajectory tracking, and successful obstacle avoidance. The PID and LQR controllers maintained low steady-state error, and EKF-SLAM significantly improved pose estimation accuracy in GPS-denied test scenarios. The A* planner consistently generated feasible routes while respecting environmental constraints.</p>
 </body>
 </html>

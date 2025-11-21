@@ -2,38 +2,96 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Project 3 – Your Name</title>
+  <title>Continuous Variable Transmission Bicycle – Het Sekhalia</title>
+  <style>
+    .flex-row{display:flex;gap:2rem;align-items:flex-start;margin:1.5rem 0}
+    .flex-text{flex:1}
+    .flex-image{flex-shrink:0;width:320px}
+    .flex-image img{width:100%;height:auto;border-radius:10px}
+    @media (max-width:768px){
+      .flex-row{flex-direction:column}
+      .flex-image{width:100%;max-width:400px}
+    }
+  </style>
 </head>
 <body>
   <nav>
     <a href="/">Home</a> | <a href="/projects/">All Projects</a>
   </nav>
 
-  <h1>Project 3 Title</h1>
+  <h1>Continuous Variable Transmission (CVT) Bicycle</h1>
 
-  <!-- IMRD/IDEC structure -->
-  <h2>Introduction</h2>
-  <p>What problem were you trying to solve? Why does it matter? What is the social or engineering value?</p>
+  <div class="flex-row" style="display:flex;gap:2rem;align-items:flex-start;margin:1.5rem 0;">
+    <div class="flex-text" style="flex:1;">
+      <h2>Introduction</h2>
+      <p>Cyclists often struggle with abrupt gear transitions, mechanical wear, and efficiency losses associated with traditional derailleurs. A continuous variable transmission (CVT) system offers smoother, stepless gear changes and reduces long-term maintenance. This project focused on engineering the electrical and control subsystem of a CVT bicycle, enabling real-time manual gear-ratio adjustment and laying the foundation for future automatic shifting. The goal was to create a reliable, user-friendly transmission system validated through real-world prototyping and testing.</p>
+    </div>
+    <div class="flex-image" style="flex-shrink:0;width:230px;">
+      <img src="/assets/img/CVT2.png" alt="CVT prototype overview" style="width:100%;height:auto;border-radius:10px;">
+    </div>
+  </div>
 
-  <h2>Method</h2>
-  <p>How did you approach the problem? What tools, technologies, or methods did you use?</p>
+  <h2>Methodology</h2>
+  <p>The project centered on building the electrical and control subsystems that drive a dual-cone, belt-driven CVT prototype. Work was organized into the following focus areas:</p>
 
-  <h2>Results</h2>
-  <p>What did you build? Show screenshots, diagrams, or short descriptions of outcomes.</p>
+  <div class="flex-row" style="display:flex;gap:2rem;align-items:flex-start;margin:1.5rem 0;">
+    <div class="flex-text" style="flex:1;">
+      <h4>Electrical Subsystem Architecture</h4>
+      <ul>
+        <li>Designed the full electrical control system for the belt-driven CVT prototype, including power distribution and signal conditioning.</li>
+        <li>Integrated motor drivers, rotary encoders, IMU sensors, and potentiometer-based rider input interfaces.</li>
+      </ul>
+    </div>
+    <div class="flex-image" style="flex-shrink:0;width:400px;">
+      <img src="/assets/img/CVT_control.png" alt="CVT electrical architecture" style="width:100%;height:auto;border-radius:10px;">
+    </div>
+  </div>
 
-  <h2>Discussion</h2>
-  <p>What worked well? What challenges did you face? What did you learn from this project?</p>
+  <div class="flex-row">
+    <div class="flex-text">
+      <h4>Feedback Control Design</h4>
+      <ul>
+        <li>Implemented a PID-based feedback loop using encoder measurements to position the belt accurately between the two cones.</li>
+        <li>Validated closed-loop responsiveness for smooth gear shifting under varying loads and friction conditions.</li>
+      </ul>
+    </div>
+  </div>
 
-  <!-- Specific contributions -->
-  <h2>My Contributions</h2>
+  <div class="flex-row" style="display:flex;gap:2rem;align-items:flex-start;margin:1.5rem 0;">
+    <div class="flex-image" style="flex-shrink:0;width:320px;">
+      <img src="/assets/img/CVT_final.png" alt="Rider interface for CVT" style="width:100%;height:auto;border-radius:10px;">
+    </div>
+    <div class="flex-text" style="flex:1;">
+      <h4>User-Driven Gear Adjustment</h4>
+      <ul>
+        <li>Mapped potentiometer input to belt position, enabling riders to continuously modulate the gear ratio.</li>
+        <li>Ensured intuitive response to rider torque and cadence requirements while keeping the interface low-effort.</li>
+      </ul>
+      <h4>Foundation for Automatic Shifting</h4>
+      <ul>
+        <li>Incorporated IMU-based velocity and inclination sensing to support future automatic shifting strategies.</li>
+        <li>Leveraged prior work on IMU orientation estimation and Kalman filtering to improve grade and load detection.</li>
+      </ul>
+    </div>
+  </div>
+
+  
+
+  <h2>Implementation</h2>
+  <p>The subsystem was prototyped using a microcontroller-driven motor actuator that manipulated the CVT belt mechanism. Encoder-based belt-position feedback ensured precise actuation, while the IMU provided acceleration and grade measurements for automatic-control research. The assembly satisfied weight, torque, and structural requirements for on-bike integration.</p>
   <ul>
-    <li>Explain clearly what YOU did vs. what the team did.</li>
-    <li>Use action verbs: designed, implemented, tested, deployed, etc.</li>
+    <li>Total system weight: ~6.5 lbs</li>
+    <li>Actuation torque: 0.2 Nm</li>
+    <li>Efficiency: ~70% under high load (future work targets improved belt tensioning and friction surfaces).</li>
   </ul>
 
-  <!-- Optional media -->
-  <h2>Media</h2>
-  <img src="/assets/img/proj3-hero.jpg" alt="Screenshot of Project 3" style="max-width:400px;">
-  <p><a href="https://github.com/yourusername/project1">Source Code</a></p>
+  <h2>Results</h2>
+  <p>The prototype successfully demonstrated smooth, manual stepless gear shifting during road tests. The PID loop maintained stable belt positioning with low overshoot, enabling seamless transitions. While efficiency losses at higher loads highlighted opportunities for tensioning improvements, the system achieved its structural and usability goals and established a solid foundation for automatic shifting logic.</p>
+
+  <div style="display:flex;justify-content:center;margin:2rem 0;">
+    <div class="flex-image" style="width:800px;">
+      <img src="/assets/img/CVT_win.jpeg" alt="CVT road testing" style="width:100%;height:auto;border-radius:10px;">
+    </div>
+  </div>
 </body>
 </html>
