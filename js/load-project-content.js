@@ -5,7 +5,8 @@ const projectFiles = {
   1: 'projects/proj-1.html',
   2: 'projects/proj-2.html',
   3: 'projects/proj-3.html',
-  4: 'projects/proj-4.html'
+  4: 'projects/proj-4.html',
+  5: 'projects/proj-5.html'
 };
 
 // Cache for loaded content
@@ -19,9 +20,15 @@ function loadProjectContent(projectId, imagePathPrefix = '') {
     //   return;
     // }
 
-    const projectFile = projectFiles[projectId];
+    // Ensure projectId is a number for consistent lookup
+    const projectIdNum = Number(projectId);
+    // Try both numeric and string key access (JavaScript object keys are strings)
+    const projectFile = projectFiles[projectIdNum] || projectFiles[String(projectIdNum)];
     if (!projectFile) {
-      reject(new Error(`Project ${projectId} not found`));
+      console.error(`Project lookup failed. ID: ${projectId} (as number: ${projectIdNum}, as string: "${String(projectIdNum)}")`);
+      console.error('Available projects:', Object.keys(projectFiles));
+      console.error('projectFiles object:', projectFiles);
+      reject(new Error(`Project ${projectIdNum} not found`));
       return;
     }
 
@@ -34,10 +41,10 @@ function loadProjectContent(projectId, imagePathPrefix = '') {
     
     if (isInProjectsDir) {
       // We're in projects/ directory, so use relative path
-      filePath = `proj-${projectId}.html`;
+      filePath = `proj-${projectIdNum}.html`;
     } else {
       // We're at root, so use full path
-      filePath = `projects/proj-${projectId}.html`;
+      filePath = `projects/proj-${projectIdNum}.html`;
     }
 
     // Append timestamp to bypass browser cache during development

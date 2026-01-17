@@ -2,38 +2,71 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Project 5 – Your Name</title>
+  <title>Policy Gradient RL for Control – Het Sekhalia</title>
+  <style>
+    .flex-row{display:flex;gap:2rem;align-items:flex-start;margin:1.5rem 0}
+    .flex-text{flex:1}
+    .flex-image{flex-shrink:0;width:320px}
+    .flex-image img{width:100%;height:auto;border-radius:10px}
+    @media(max-width:768px){
+      .flex-row{flex-direction:column}
+      .flex-image{width:100%;max-width:400px}
+    }
+  </style>
 </head>
 <body>
   <nav>
     <a href="/">Home</a> | <a href="/projects/">All Projects</a>
   </nav>
 
-  <h1>Project 5 Title</h1>
+  <h1>Policy Gradient Reinforcement Learning for Control</h1>
 
-  <!-- IMRD/IDEC structure -->
-  <h2>Introduction</h2>
-  <p>What problem were you trying to solve? Why does it matter? What is the social or engineering value?</p>
+  <div class="flex-row" style="display:flex;gap:2rem;align-items:flex-start;margin:1.5rem 0;">
+    <div class="flex-text" style="flex:1;">
+      <h2>Introduction & Social Value</h2>
+      <p>Reinforcement learning (RL) provides a principled framework for training agents to make sequential decisions under uncertainty. Policy-gradient algorithms, in particular, are widely used in robotics and autonomous systems where smooth, continuous control is essential. This project focused on implementing and evaluating fundamental policy-gradient methods—REINFORCE, REINFORCE with Baseline, and N-step Advantage Actor-Critic (A2C)—to solve the CartPole-v1 control task. The objective was to build a clean, modular codebase enabling controlled experimentation across algorithms, hyperparameters, and random seeds.</p>
+    </div>
+    <div class="flex-image" style="flex-shrink:0;width:320px;">
+      <img src="/assets/img/cart_pole.gif" alt="CartPole training visualization" style="width:100%;height:auto;border-radius:10px;">
+    </div>
+  </div>
 
-  <h2>Method</h2>
-  <p>How did you approach the problem? What tools, technologies, or methods did you use?</p>
-
-  <h2>Results</h2>
-  <p>What did you build? Show screenshots, diagrams, or short descriptions of outcomes.</p>
-
-  <h2>Discussion</h2>
-  <p>What worked well? What challenges did you face? What did you learn from this project?</p>
-
-  <!-- Specific contributions -->
-  <h2>My Contributions</h2>
+  <h2>Methodology</h2>
+  <p>I built a modular PyTorch framework for policy-gradient experimentation with clear separation between policy/value networks, experiment runners, and plotting utilities. The stack supported:</p>
   <ul>
-    <li>Explain clearly what YOU did vs. what the team did.</li>
-    <li>Use action verbs: designed, implemented, tested, deployed, etc.</li>
+    <li>Configurable policy networks, value baselines, and multi-seed experiment execution.</li>
+    <li>Automatic checkpointing and evaluation utilities for reproducible analysis.</li>
+    <li>Experiment scripts aligned with the course specification for CartPole-v1.</li>
   </ul>
 
-  <!-- Optional media -->
-  <h2>Media</h2>
-  <img src="/assets/img/proj5-hero.jpg" alt="Screenshot of Project 5" style="max-width:400px;">
-  <p><a href="https://github.com/yourusername/project1">Source Code</a></p>
+  <h3>Algorithms</h3>
+  <ul>
+    <li><strong>REINFORCE (Monte-Carlo Policy Gradient)</strong> – episodic updates driven by discounted returns.</li>
+    <li><strong>REINFORCE with Baseline</strong> – added a learned baseline to reduce gradient variance; jointly optimized policy and baseline via Adam.</li>
+    <li><strong>N-step Advantage Actor-Critic (A2C)</strong> – implemented general N-step bootstrapped returns with N= {1, 10, 100}, advantage estimation, and dual network updates.</li>
+  </ul>
+
+  <h2>Implementation</h2>
+  <p>All algorithms were trained on CartPole-v1 for 3,500 episodes per run, with 5 IID random seeds per method. During training the policy was checkpointed every 100 episodes and evaluated over 20 test episodes. The resulting performance matrix enabled consistent plotting of learning dynamics. Vectorized return computation, device-agnostic modules, and PyTorch autograd ensured efficient training and stable gradients.</p>
+
+  <h2>Results</h2>
+  <div style="display:flex;justify-content:center;gap:2rem;margin:1.5rem 0;">
+    <div style="width:300px;">
+      <img src="/assets/img/REINFORCE.png" alt="REINFORCE learning curves" style="width:100%;height:auto;border-radius:10px;">
+    </div>
+    <div style="width:300px;">
+      <img src="/assets/img/REINFORCE_WITH_BASELINE.png" alt="A2C learning curves" style="width:100%;height:auto;border-radius:10px;">
+    </div>
+    <div style="width:300px;">
+      <img src="/assets/img/A2C_100.png" alt="A2C learning curves" style="width:100%;height:auto;border-radius:10px;">
+    </div>
+  </div>
+  <p>The final implementation demonstrated:</p>
+  <ul>
+    <li>Reliable convergence for REINFORCE with Baseline and N-step A2C (N = 10, 100), reaching optimal control in under 300 episodes.</li>
+    <li>Reduced variance in learning curves compared to vanilla REINFORCE, matching theoretical expectations.</li>
+    <li>Smoother, more stable returns as N increased, with A2C (N = 100) delivering rapid convergence and minimal oscillation.</li>
+    <li>Reproducible results across seeds thanks to strict experiment logging, checkpointing, and plotting utilities.</li>
+  </ul>
 </body>
 </html>

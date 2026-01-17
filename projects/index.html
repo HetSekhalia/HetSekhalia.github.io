@@ -8,11 +8,11 @@
     body{max-width:880px;margin:2rem auto;font:16px/1.6 system-ui,Arial;padding:0 1rem}
     header nav a{margin-right:1rem}
     .grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-    .card{border:1px solid #ddd;border-radius:12px;padding:1rem;text-decoration:none;color:inherit;display:block;transition:box-shadow 0.3s}
+    .card{border:1px solid #ddd;border-radius:12px;padding:1rem;text-decoration:none;color:inherit;display:flex;flex-direction:column;transition:box-shadow 0.3s}
     .card:hover{box-shadow:0 4px 8px rgba(0,0,0,0.1)}
-    .card p{color:#000;margin:0.5rem 0 0 0}
+    .card p{color:#000;margin:0.5rem 0 0 0;flex:1}
     .card h3{color:inherit;text-decoration:none;margin:0.5rem 0}
-    .card img{cursor:pointer;transition:opacity 0.3s}
+    .card img{cursor:pointer;transition:opacity 0.3s;width:100%;height:200px;object-fit:cover;border-radius:8px}
     .card:hover img{opacity:0.8}
     img{max-width:100%;height:auto;border-radius:8px}
     .modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.9);cursor:pointer;overflow-y:auto}
@@ -55,17 +55,22 @@
         <p>Developing a full autonomy stack for a wheel loader, combining RRT-based planning, B-spline smoothing, and real-time NMPC within a ROS2 + Isaac Sim environment.</p>
       </div>
       <div class="card" data-project="2">
-        <img src="../assets/img/MCT.jpeg" alt="Project 2 thumbnail">
+        <img src="../assets/img/dance.gif" alt="Project 2 thumbnail">
+        <h3>CLIP-Guided Pretraining for Humanoid</h3>
+        <p>Proposed a CLIP-guided pretraining strategy that leverages semantic motion similarity to accelerate physics-based humanoid learning.</p>
+      </div>
+      <div class="card" data-project="3">
+        <img src="../assets/img/MCT.jpeg" alt="Project 3 thumbnail">
         <h3>Autonomous Vehicle Control</h3>
         <p>Designed full-stack planning and control for a simulated Tesla Model 3, integrating A*, PID/LQR control, and EKF-SLAM for robust autonomous navigation.</p>
       </div>
-      <div class="card" data-project="3">
-        <img src="../assets/img/CVT.png" alt="Project 3 thumbnail">
+      <div class="card" data-project="4">
+        <img src="../assets/img/CVT.png" alt="Project 4 thumbnail">
         <h3>Continuous Variable Transmission Bicycle</h3>
         <p>Built the control system for a CVT bicycle using encoder-driven PID control and IMU sensing, enabling smooth real-time gear ratio adjustment and a functional prototype.</p>
       </div>
-      <div class="card" data-project="4">
-        <img src="../assets/img/cart_pole.gif" alt="Project 4 thumbnail">
+      <div class="card" data-project="5">
+        <img src="../assets/img/cart_pole.gif" alt="Project 5 thumbnail">
         <h3>Policy Gradient RL for Control</h3>
         <p>Developed and evaluated a suite of deep reinforcement learning agents to solve CartPole-v1, applying policy-gradient methods.</p>
       </div>
@@ -103,7 +108,14 @@
     </div>
   </div>
 
-  <script src="../js/load-project-content.js"></script>
+  <div id="projectModal5" class="modal project-modal">
+    <span class="modal-close project-modal-close">&times;</span>
+    <div class="project-modal-content" onclick="event.stopPropagation()">
+      <!-- Content will be loaded from proj-5.html -->
+    </div>
+  </div>
+
+  <script src="../js/load-project-content.js?v=2"></script>
   <script>
     // Project modals
     const projectCards = document.querySelectorAll('.card[data-project]');

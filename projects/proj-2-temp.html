@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CLIP-Guided Pretraining for Physics-Based Humanoid Control – Het Sekhalia</title>
+  <style>
+    .intro-container {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      margin: 1rem 0;
+    }
+    .intro-text {
+      flex: 1;
+    }
+    .intro-image {
+      flex-shrink: 0;
+      width: 300px;
+    }
+    .intro-image img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    @media (max-width: 768px) {
+      .intro-container {
+        flex-direction: column;
+      }
+      .intro-image {
+        width: 100%;
+        max-width: 400px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/">Home</a> | <a href="/projects/">All Projects</a>
+  </nav>
+
+  <h1>CLIP-Guided Pretraining for Physics-Based Humanoid Control</h1>
+  
+  <p><strong>Carnegie Mellon University, Deep Reinforcement Learning and Control</strong></p>
+
+  <div class="intro-container" style="display: flex; gap: 2rem; align-items: center; margin: 1rem 0;">
+    <div class="intro-text" style="flex: 1;">
+      <h2>Introduction</h2>
+      <p>Training physics-based humanoid agents to perform complex motion-capture skills is computationally expensive and often unstable when learning from scratch. This project explores how semantic priors from vision-language models (CLIP) can be used to guide multi-task pretraining, accelerating convergence and improving final policy quality. The core idea is to bias pretraining toward motions that are semantically similar to a target skill using CLIP text embeddings, before fine-tuning on the target motion.</p>
+    </div>
+    <div class="intro-image" style="flex-shrink: 0; width: 300px;">
+      <img src="/assets/img/spinkick.gif" alt="Spin kick motion" style="width: 100%; height: auto; border-radius: 12px;">
+    </div>
+  </div>
+
+  <h2>Methodology</h2>
+  
+  <p>The approach centered on leveraging CLIP's semantic understanding to guide the pretraining phase:</p>
+  
+  <h4>CLIP-Guided Motion Sampling Pipeline</h4>
+  <ul>
+    <li>Built a CLIP-guided motion sampling pipeline that embeds textual descriptions of motion-capture trajectories using CLIP's text encoder</li>
+    <li>Computed cosine similarity–based sampling distributions between target and pretraining motions, with temperature-controlled softmax to tune semantic focus</li>
+    <li>Integrated similarity-weighted sampling into DeepMimic-style multi-motion pretraining, followed by fine-tuning on a target skill</li>
+    <li>Evaluated both PPO (on-policy) and TD3 (off-policy) agents under varying temperatures, subset sizes, and agent choices</li>
+  </ul>
+
+  <div style="display: flex; justify-content: center; margin: 2rem 0;">
+    <img src="/assets/img/CLIP.png" alt="CLIP model" style="max-width: 700px; width: 100%; height: auto; border-radius: 12px;">
+  </div>
+
+  <h2>Implementation</h2>
+  
+  <p>The system was implemented with careful attention to algorithm-agnostic design and comprehensive evaluation:</p>
+  
+  <ul>
+    <li>Used the DeepMimic framework with a high-DoF humanoid model and motion-capture reference conditioning</li>
+    <li>Implemented CLIP-based sampling logic external to the RL loop to preserve algorithm-agnostic compatibility</li>
+    <li>Ran large-scale training and ablation studies across four target skills: Dance, Getup-Facedown, Spin Kick, Zombie Walk</li>
+    <li>Conducted controlled comparisons against uniform pretraining and training from scratch baselines</li>
+  </ul>
+
+  <h2>Results</h2>
+  
+  <p>The CLIP-guided approach demonstrated significant improvements across multiple dimensions:</p>
+  
+  <ul>
+    <li>CLIP-guided pretraining consistently improved convergence speed and final returns over uniform sampling and no pretraining</li>
+    <li>PPO demonstrated strong robustness across temperatures and subset sizes, achieving the highest final performance overall</li>
+    <li>TD3 benefited significantly from low-temperature CLIP sampling and larger motion subsets, highlighting the importance of structured semantic priors</li>
+    <li>Demonstrated that language-encoded human priors can serve as effective inductive bias for physics-based control</li>
+  </ul>
+
+  <div style="display: flex; flex-direction: column; gap: 2rem; align-items: center; margin: 2rem 0;">
+    <img src="/assets/img/TD3_temp.png" alt="TD3 temperature results" style="max-width: 700px; width: 100%; height: auto; border-radius: 12px;">
+    <img src="/assets/img/PPO_subset.png" alt="PPO subset results" style="max-width: 700px; width: 100%; height: auto; border-radius: 12px;">
+  </div>
+
+  <div class="intro-container" style="display: flex; gap: 2rem; align-items: center; margin: 1rem 0;">
+    <div class="intro-text" style="flex: 1;">
+      <h2>Key Takeaways</h2>
+      
+      <ul>
+        <li>Semantic similarity from pretrained language models can meaningfully guide RL pretraining without manual task curation</li>
+        <li>Pretraining distribution design matters more for off-policy agents, while on-policy methods show greater inherent stability</li>
+        <li>The approach is scalable to new skills as long as motions can be described textually, with future extensions toward vision-based embeddings</li>
+      </ul>
+    </div>
+    <div class="intro-image" style="flex-shrink: 0; width: 300px;">
+      <img src="/assets/img/zombie.gif" alt="Zombie walk motion" style="width: 100%; height: auto; border-radius: 12px;">
+    </div>
+  </div>
+</body>
+</html>

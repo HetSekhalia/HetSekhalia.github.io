@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Autonomous Vehicle Control System – Het Sekhalia</title>
+  <title>CLIP-Guided Pretraining for Physics-Based Humanoid Control – Het Sekhalia</title>
   <style>
     .intro-container {
       display: flex;
       gap: 2rem;
-      align-items: flex-start;
+      align-items: center;
       margin: 1rem 0;
     }
     .intro-text {
@@ -38,67 +38,78 @@
     <a href="/">Home</a> | <a href="/projects/">All Projects</a>
   </nav>
 
-  <h1>Autonomous Vehicle Control System</h1>
-  <h2>Tesla Model 3 Simulation</h2>
+  <h1>CLIP-Guided Pretraining for Physics-Based Humanoid Control</h1>
   
+  <p><strong>Carnegie Mellon University, Deep Reinforcement Learning and Control</strong> (<a href="/10_703_Final_Report.pdf" target="_blank" style="color: #0066cc; text-decoration: underline;">Paper</a>)</p>
 
-  <div class="intro-container" style="display: flex; gap: 2rem; align-items: flex-start; margin: 1rem 0;">
+
+
+  <div class="intro-container" style="display: flex; gap: 2rem; align-items: center; margin: 1rem 0;">
     <div class="intro-text" style="flex: 1;">
       <h2>Introduction</h2>
-      <p>Autonomous driving systems play a critical role in improving road safety, reducing traffic fatalities, and enabling efficient mobility in urban environments. This project focused on developing and evaluating a full-stack autonomous vehicle control pipeline for a Tesla Model 3 inside the Webots simulator. The objective was to design robust planning, control, and localization modules capable of handling real-time navigation tasks, even in GPS-denied environments and under noisy sensor conditions.</p>
+      <p>Training physics-based humanoid agents to perform complex motion-capture skills is computationally expensive and often unstable when learning from scratch. This project explores how semantic priors from vision-language models (CLIP) can be used to guide multi-task pretraining, accelerating convergence and improving final policy quality. The core idea is to bias pretraining toward motions that are semantically similar to a target skill using CLIP text embeddings, before fine-tuning on the target motion.</p>
     </div>
     <div class="intro-image" style="flex-shrink: 0; width: 300px;">
-      <img src="/assets/img/MCT.jpeg" alt="Tesla Model 3 simulation">
+      <img src="/assets/img/spinkick.gif" alt="Spin kick motion" style="width: 100%; height: auto; border-radius: 12px;">
     </div>
   </div>
 
   <h2>Methodology</h2>
   
-  <p>The system was implemented as a modular stack consisting of vehicle modeling, trajectory tracking controllers, path planning, and localization:</p>
+  <p>The approach centered on leveraging CLIP's semantic understanding to guide the pretraining phase:</p>
   
-  <h4>Vehicle Dynamics Modeling</h4>
+  <h4>CLIP-Guided Motion Sampling Pipeline</h4>
   <ul>
-    <li>Constructed a linearized bicycle model of the Tesla Model 3 to capture essential kinematic behavior.</li>
-    <li>Tuned model parameters to match turning radius, wheelbase, and velocity ranges.</li>
+    <li>Built a CLIP-guided motion sampling pipeline that embeds textual descriptions of motion-capture trajectories using CLIP's text encoder</li>
+    <li>Computed cosine similarity–based sampling distributions between target and pretraining motions, with temperature-controlled softmax to tune semantic focus</li>
+    <li>Integrated similarity-weighted sampling into DeepMimic-style multi-motion pretraining, followed by fine-tuning on a target skill</li>
+    <li>Evaluated both PPO (on-policy) and TD3 (off-policy) agents under varying temperatures, subset sizes, and agent choices</li>
   </ul>
-  
-  <div style="display: flex; gap: 2rem; align-items: flex-start; margin: 1rem 0;">
-    <div style="flex: 1;">
-      <h4>Control System Design</h4>
-      <ul>
-        <li>Implemented PID controllers for lateral (steering) and longitudinal (speed) tracking, enabling real-time response to reference trajectories.</li>
-        <li>Designed state-space controllers using pole placement to improve stability during aggressive steering or curved-road scenarios.</li>
-        <li>Developed a discrete-time LQR controller for optimal lateral control, balancing steering smoothness, noise rejection, and safety constraints.</li>
-      </ul>
-    </div>
-    <div style="flex-shrink: 0; width: 400px;">
-      <img src="/assets/img/P3_LQR%20result.png" alt="LQR control results" style="width: 100%; height: auto; border-radius: 8px;">
-    </div>
+
+  <div style="display: flex; justify-content: center; margin: 2rem 0;">
+    <img src="/assets/img/CLIP.png" alt="CLIP model" style="max-width: 700px; width: 100%; height: auto; border-radius: 12px;">
   </div>
-  
-  <div style="display: flex; gap: 2rem; align-items: flex-start; margin: 1rem 0;">
-    <div style="flex-shrink: 0; width: 300px;">
-      <img src="/assets/img/P3_A*%20planning.png" alt="A* path planning" style="width: 100%; height: auto; border-radius: 8px;">
-    </div>
-    <div style="flex: 1;">
-      <h4>Planning & Navigation</h4>
-      <ul>
-        <li>Programmed an A* planner to generate obstacle-aware, collision-free trajectories in dynamic environments.</li>
-        <li>Ensured safe navigation by incorporating road geometry, constraints, and obstacle boundaries.</li>
-      </ul>
-    </div>
-  </div>
-  
-  <h4>Localization & Estimation</h4>
-  <ul>
-    <li>Deployed EKF-SLAM to estimate vehicle position and heading when GPS is unreliable or unavailable.</li>
-    <li>Modeled sensor noise and incorporated range/bearing measurements to improve state estimation quality.</li>
-  </ul>
 
   <h2>Implementation</h2>
-  <p>Each subsystem—vehicle model, controllers, planner, and SLAM—was implemented as a standalone module inside Webots. Controllers operated at discrete time steps to maintain real-time behavior, and SLAM outputs were fed back into the control loop for accurate trajectory tracking.</p>
+  
+  <p>The system was implemented with careful attention to algorithm-agnostic design and comprehensive evaluation:</p>
+  
+  <ul>
+    <li>Used the DeepMimic framework with a high-DoF humanoid model and motion-capture reference conditioning</li>
+    <li>Implemented CLIP-based sampling logic external to the RL loop to preserve algorithm-agnostic compatibility</li>
+    <li>Ran large-scale training and ablation studies across four target skills: Dance, Getup-Facedown, Spin Kick, Zombie Walk</li>
+    <li>Conducted controlled comparisons against uniform pretraining and training from scratch baselines</li>
+  </ul>
 
   <h2>Results</h2>
-  <p>The integrated system achieved stable lane-keeping, smooth trajectory tracking, and successful obstacle avoidance. The PID and LQR controllers maintained low steady-state error, and EKF-SLAM significantly improved pose estimation accuracy in GPS-denied test scenarios. The A* planner consistently generated feasible routes while respecting environmental constraints.</p>
+  
+  <p>The CLIP-guided approach demonstrated significant improvements across multiple dimensions:</p>
+  
+  <ul>
+    <li>CLIP-guided pretraining consistently improved convergence speed and final returns over uniform sampling and no pretraining</li>
+    <li>PPO demonstrated strong robustness across temperatures and subset sizes, achieving the highest final performance overall</li>
+    <li>TD3 benefited significantly from low-temperature CLIP sampling and larger motion subsets, highlighting the importance of structured semantic priors</li>
+    <li>Demonstrated that language-encoded human priors can serve as effective inductive bias for physics-based control</li>
+  </ul>
+
+  <div style="display: flex; flex-direction: column; gap: 2rem; align-items: center; margin: 2rem 0;">
+    <img src="/assets/img/TD3_temp.png" alt="TD3 temperature results" style="max-width: 700px; width: 100%; height: auto; border-radius: 12px;">
+    <img src="/assets/img/PPO_subset.png" alt="PPO subset results" style="max-width: 700px; width: 100%; height: auto; border-radius: 12px;">
+  </div>
+
+  <div class="intro-container" style="display: flex; gap: 2rem; align-items: center; margin: 1rem 0;">
+    <div class="intro-text" style="flex: 1;">
+      <h2>Key Takeaways</h2>
+      
+      <ul>
+        <li>Semantic similarity from pretrained language models can meaningfully guide RL pretraining without manual task curation</li>
+        <li>Pretraining distribution design matters more for off-policy agents, while on-policy methods show greater inherent stability</li>
+        <li>The approach is scalable to new skills as long as motions can be described textually, with future extensions toward vision-based embeddings</li>
+      </ul>
+    </div>
+    <div class="intro-image" style="flex-shrink: 0; width: 300px;">
+      <img src="/assets/img/zombie.gif" alt="Zombie walk motion" style="width: 100%; height: auto; border-radius: 12px;">
+    </div>
+  </div>
 </body>
 </html>
